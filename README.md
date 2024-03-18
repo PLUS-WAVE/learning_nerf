@@ -1,3 +1,4 @@
+**只是修改了原仓库的一些Windows上的bugs，保证 img_fit demo 可以正常运行**
 ## Issues
 
 ### 1 DataLoader 的多进程 pickle
