@@ -1,5 +1,6 @@
 import torch
 import os
+import shutil
 from torch import nn
 import numpy as np
 import torch.nn.functional
@@ -296,8 +297,8 @@ def load_model(net,
                resume=True,
                epoch=-1):
     if not resume:
-        os.system('rm -rf {}'.format(model_dir))
-
+        if os.path.exists(model_dir):
+            shutil.rmtree(model_dir)
     if not os.path.exists(model_dir):
         return 0
 
@@ -329,7 +330,7 @@ def load_model(net,
 
 
 def save_model(net, optim, scheduler, recorder, model_dir, epoch, last=False):
-    os.system('mkdir -p {}'.format(model_dir))
+    os.makedirs(model_dir, exist_ok=True)
     model = {
         'net': net.state_dict(),
         'optim': optim.state_dict(),
@@ -349,8 +350,7 @@ def save_model(net, optim, scheduler, recorder, model_dir, epoch, last=False):
     ]
     if len(pths) <= 5:
         return
-    os.system('rm {}'.format(
-        os.path.join(model_dir, '{}.pth'.format(min(pths)))))
+    os.remove(os.path.join(model_dir, '{}.pth'.format(min(pths))))
 
 
 def load_network(net, model_dir, resume=True, epoch=-1, strict=True):
@@ -425,8 +425,9 @@ def remove_net_layer(net, layers):
 
 def save_trained_config(cfg):
     if not cfg.resume:
-        os.system('rm -rf ' + cfg.trained_config_dir+'/*')
-    os.system('mkdir -p ' + cfg.trained_config_dir)
+        if os.path.exists(cfg.trained_config_dir):
+            shutil.rmtree(cfg.trained_config_dir)
+    os.makedirs(cfg.trained_config_dir, exist_ok=True)
     train_cmd = ' '.join(sys.argv)
     train_cmd_path = os.path.join(cfg.trained_config_dir, 'train_cmd.txt')
     train_config_path = os.path.join(cfg.trained_config_dir, 'train_config.yaml')
@@ -454,7 +455,7 @@ def load_pretrain(net, model_dir):
 
 def save_pretrain(net, task, model_dir):
     model_dir = os.path.join('data/trained_model', task, model_dir)
-    os.system('mkdir -p ' +  model_dir)
+    os.makedirs(model_dir, exist_ok=True)
     model = {'net': net.state_dict()}
     torch.save(model, os.path.join(model_dir, 'latest.pth'))
 

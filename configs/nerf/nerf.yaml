@@ -52,7 +52,7 @@ train:
         type: 'exponential'
         gamma: 0.1
         decay_epochs: 1000
-    num_workers: 4
+    num_workers: 0
 
 test:
     batch_size: 1

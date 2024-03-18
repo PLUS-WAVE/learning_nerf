@@ -53,7 +53,7 @@ def read_pickle(pkl_path):
 
 
 def save_pickle(data, pkl_path):
-    os.system('mkdir -p {}'.format(os.path.dirname(pkl_path)))
+    os.makedirs(os.path.dirname(pkl_path), exist_ok=True)
     with open(pkl_path, 'wb') as f:
         pickle.dump(data, f)
 

@@ -2,6 +2,7 @@ from collections import deque, defaultdict
 import torch
 from tensorboardX import SummaryWriter
 import os
+import shutil
 from lib.config.config import cfg
 
 from termcolor import colored
@@ -52,7 +53,8 @@ class Recorder(object):
         log_dir = cfg.record_dir
         if not cfg.resume:
             print(colored('remove contents of directory %s' % log_dir, 'red'))
-            os.system('rm -r %s' % log_dir)
+            if os.path.exists(log_dir):
+                shutil.rmtree(log_dir)
         self.writer = SummaryWriter(log_dir=log_dir)
 
         # scalars

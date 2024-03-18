@@ -109,7 +109,7 @@ def main():
     if cfg.local_rank == 0:
         print('Success!')
         print('='*80)
-    os.system('kill -9 {}'.format(os.getpid()))
+    exit(0)
 
 
 if __name__ == "__main__":
